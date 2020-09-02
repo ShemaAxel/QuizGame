@@ -29,4 +29,7 @@ class Levels extends Model
         'levelId', 'levelDescription', 'levelName', 'status'
     ];
 
+    public function quizes() {
+        return $this->hasMany('App\Quizes','levelId')->where('status','1');
+    }
 }

@@ -79,6 +79,25 @@ class StudentsController extends Controller
                 ], 200);
             }
 
+            $student = Students::where([
+                ["status", "=", "1"],
+                ["MSISDN","=",$request->MSISDN]
+            ])->first();
+
+            if($student){
+                Log::error("An error occured");
+                return response()->json([
+                    "responseDescription" => "Number already taken",
+                    "responseCode" => "",
+                    "responseMessage" => "Number aleady taken.",
+                    "meta" => [
+                        "content" => $request->MSISDN,
+                    ],
+                ], 200);
+            }
+
+
+
             $student = $this->helpers->createStudent($request);
 
             if(!$student){
@@ -108,5 +127,107 @@ class StudentsController extends Controller
             return response()->json($ex->getMessage(), 500);
         }
 
+    }
+
+
+
+    /**
+     * User Login end point
+     *
+     * @return Json
+     */
+    public function login(Request $request)
+    {
+        try {
+
+            Log::info('Access Login');
+
+            $notValid = $this->helpers->loginRequestValidator($request);
+
+            if ($notValid) {
+                Log::error("Validation Error.");
+                return response()->json([
+                    "responseDescription" => "Invalid Request.",
+                    "responseCode" => "",
+                    "responseMessage" => "",
+                    "meta" => [
+                        "content" => $notValid,
+                    ],
+                ], 200);
+            }
+
+
+            $student = Students::where([
+                ["status", "=", "1"],
+                ["MSISDN","=",$request->MSISDN]
+            ])->first();
+
+
+            if ($student) {
+                //if status 0 not active
+                if ($student->status==1) {              
+                    Log::info('Validating credentials.');
+
+                    $login = $this->helpers->loginProcessor($student, $request->password);
+
+                    if ($login) {
+
+                        Log::info('Successfully logged in.'.$student);
+
+                        return response()->json([
+                            "responseDescription" => "Success.",
+                            "responseCode" => "100",
+                            "responseMessage" => "Success",
+                            "meta" => [
+                                "content" => $student,
+                            ],
+                        ], 200);
+
+                    } else {
+
+                        Log::error('Invalid Credentials.'.$request->MSISDN);
+
+                        return response()->json([
+                            "responseDescription" => "Invalid Credentials.",
+                            "responseCode" => "101",
+                            "responseMessage" => "Invalid Credentials.",
+                            "meta" => [
+                                "content" => null,
+                            ],
+                        ], 200);
+                    }
+                }else{
+
+                    Log::error('User is not active.');
+
+                    return response()->json([
+                        "responseDescription" => "User not active.",
+                        "responseCode" => "103",
+                        "responseMessage" => "Inactive user.",
+                        "meta" => [
+                            "content" => null,
+                        ],
+                    ], 200);
+
+                }
+            } else {
+
+                Log::error('Invalid Credentials.'.$request->MSISDN);
+
+                return response()->json([
+                    "responseDescription" => "Invalid Credentials.",
+                    "responseCode" => "101",
+                    "responseMessage" => "Invalid Credentials.",
+                    "meta" => [
+                        "content" => null,
+                    ],
+                ], 200);
+            }
+
+        } catch (Exception $ex) {
+
+            Log::error("Application . Exception : " . $ex->getMessage());
+            return response()->json($ex->getMessage(), 500);
+        }
     }
 }

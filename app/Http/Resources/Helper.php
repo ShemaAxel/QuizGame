@@ -6,6 +6,8 @@ namespace App\Http\Resources;
 use App\Students;
 use App\Quizes;
 use App\Levels;
+use App\OutboundSMS;
+
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
@@ -35,7 +37,8 @@ class Helper
                 "stdFname"=>"required",
                 "stdLname"=>"required",
                 "age"=>"required",
-                "levelId"=>"required"
+                "levelId"=>"required",
+                "MSISDN"=>"required"
             ])->validate();
 
             return null;
@@ -120,12 +123,43 @@ class Helper
         $student->stdFname = $request->stdFname;
         $student->stdLname = $request->stdLname;
         $student->age = $request->age;
+        $student->MSISDN = $request->MSISDN;
         $student->levelId = $request->levelId;
+        $student->passwordHash = password_hash($this->generatePIN(), PASSWORD_ARGON2I);
+
 
         $student->dateCreated = $student->dateModified = date("Y-m-d H:i:s");
         $student->save();
 
+        Log::info('Logging SMS');
+        $body = "Your PIN is : " . $this->PIN;
+        $this->logPasswordSMS($request->MSISDN, $body);
+
+
         return $student;
+    }
+
+    // PINSMS
+
+    public function logPasswordSMS($tel, $body)
+    {
+        log::info('Logging PIN sms for '.$tel);
+
+        $sms = new OutboundSMS;
+        $sms->MSISDN = $tel;
+        $sms->message = $body;
+        $sms->status = 0;
+        $sms->dateCreated = $sms->dateModified = date("Y-m-d H:i:s");
+        $sms->save();
+    }
+
+
+    //generate arandom number
+
+    public function generatePIN()
+    {
+        $this->PIN = mt_rand(1000, 9999);
+        return $this->PIN;
     }
 
     public function createQuize($request){
@@ -156,6 +190,44 @@ class Helper
         $level->save();
 
         return $level;
+    }
+
+    public function loginRequestValidator($request){
+        try {
+
+            log::info('Validating Login request ');
+
+            $validator = \Validator::make($request->all(), [
+                "MSISDN" => "required",
+                "password" => "required",
+            ])->validate();
+
+            return null;
+        } catch (ValidationException $e) {
+            $arr = [];
+            foreach ($e->errors() as $key => $value) {
+                $arr[$key] = $value[0];
+            }
+
+            return $arr;
+        }
+    }
+
+    /**
+     * Process Login.
+     * @param  telephone
+     * @param  PIN
+     * @return bool
+     */
+
+    public function loginProcessor($student, $PIN)
+    {
+        if (password_verify($PIN, $student->passwordHash)) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
 }

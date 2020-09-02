@@ -29,4 +29,13 @@ class Students extends Model
         'stdId', 'stdFname', 'stdLname', 'age', 'levelId', 'status'
     ];
 
+        /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'passwordHash',
+    ];
+
 }

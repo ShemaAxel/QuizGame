@@ -25,7 +25,7 @@ class LevelsController extends Controller
 
 
     /**
-     * View all Students 
+     * View all 
      *
      * @return Json
      */
@@ -100,6 +100,37 @@ class LevelsController extends Controller
                     "content" => $level,
                 ],
             ], 200);
+
+        }catch(Exception $ex){
+            Log::error("Application . Exception : " . $ex->getMessage());
+
+            return response()->json($ex->getMessage(), 500);
+        }
+
+    }
+
+
+    /**
+     * findById  
+     *
+     * @return Json
+     */
+    public function findById($id)
+    {
+        try{
+
+            $level = Levels::with('quizes')
+            ->where([["levelId", "=", $id]])->get();
+
+            return response()->json([
+                "responseDescription" => "Level details",
+                "responseCode" => "",
+                "responseMessage" => "",
+                "meta" => [
+                    "content" => $level,
+                ],
+            ], 200);
+            
 
         }catch(Exception $ex){
             Log::error("Application . Exception : " . $ex->getMessage());

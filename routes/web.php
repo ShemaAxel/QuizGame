@@ -19,6 +19,8 @@ $router->get('/', function () use ($router) {
 $router->group(["prefix" => "api"], function () use ($router) {
     $router->get('/students/all', ['uses' => 'StudentsController@all']);
     $router->post('/students/create', ['uses' => 'StudentsController@create']);
+    $router->post('/students/login', ['uses' => 'StudentsController@login']);
+
 });
 
 //a group of all quizes endpoints
@@ -32,4 +34,6 @@ $router->group(["prefix" => "api"], function () use ($router) {
 $router->group(["prefix" => "api"], function () use ($router) {
     $router->get('/levels/all', ['uses' => 'LevelsController@all']);
     $router->post('/level/create', ['uses' => 'LevelsController@create']);
+    $router->get('/level/{id}', ['uses' => 'LevelsController@findById']);
+
 });

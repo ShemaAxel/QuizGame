@@ -38,7 +38,8 @@ class Helper
                 "stdLname"=>"required",
                 "age"=>"required",
                 "levelId"=>"required",
-                "MSISDN"=>"required"
+                "MSISDN"=>"required",
+                "type"=>"required",
             ])->validate();
 
             return null;
@@ -84,6 +85,7 @@ class Helper
                 "levelDescription"=>"required",
                 "levelName"=>"required",
                 "passingRate" => "required",
+                "level" => "required",
             ])->validate();
 
             return null;
@@ -126,7 +128,7 @@ class Helper
         $student->MSISDN = $request->MSISDN;
         $student->levelId = $request->levelId;
         $student->passwordHash = password_hash($this->generatePIN(), PASSWORD_ARGON2I);
-
+        $student->type = $request->type;
 
         $student->dateCreated = $student->dateModified = date("Y-m-d H:i:s");
         $student->save();
@@ -184,6 +186,7 @@ class Helper
         $level->levelDescription = $request->levelDescription;
         $level->levelName = $request->levelName;
         $level->passingRate = $request->passingRate;
+        $level->level = $request->level;
 
         
         $level->dateCreated = $level->dateModified = date("Y-m-d H:i:s");

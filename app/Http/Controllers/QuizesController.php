@@ -154,8 +154,19 @@ class QuizesController extends Controller
 
             $level = Levels::where([
                 ["status", "=", "1"],
-                ["levelId", "=", $student->levelId],
+                ["level", "=", $student->levelId],
             ])->first();
+
+            if(!$level){
+                return response()->json([
+                    "responseDescription" => "Invalid level.",
+                    "responseCode" => "101",
+                    "responseMessage" => "Unkown level.",
+                    "meta" => [
+                        "content" => "",
+                    ],
+                ], 200);
+            }
 
             //looping throug answers
             foreach($request->answers as $answer){
@@ -185,7 +196,8 @@ class QuizesController extends Controller
                 return response()->json([
                     "responseDescription" => "Quiz Results",
                     "responseMessage" => "The student did not pass.",
-                    "passed" => false,
+                    "responseCode" => "101",
+		    "passed" => false,
                     "meta" => [
                         "Quiz Total Points" => $quizPoints,
                         "Student Points" => $studentPoint,
@@ -201,7 +213,8 @@ class QuizesController extends Controller
                 return response()->json([
                     "responseDescription" => "Quiz Results",
                     "responseMessage" => "The student passed.",
-                    "passed" => true,
+                    "responseCode" => "100",
+	 	    "passed" => true,
                     "meta" => [
                         "Quiz Total Points" => $quizPoints,
                         "Student Points" => $studentPoint,

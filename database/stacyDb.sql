@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 14, 2020 at 09:53 AM
+-- Generation Time: Oct 26, 2020 at 06:06 AM
 -- Server version: 5.7.31-0ubuntu0.18.04.1
--- PHP Version: 7.2.24-0ubuntu0.18.04.6
+-- PHP Version: 7.2.24-0ubuntu0.18.04.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -43,7 +43,9 @@ CREATE TABLE `history` (
 
 INSERT INTO `history` (`historyId`, `studentId`, `average`, `points`, `data`, `level`, `dateCreated`, `dateModified`) VALUES
 (1, 1, 100, 100, 'Ok', 2, '2020-10-14 13:37:09', '2020-10-14 13:37:09'),
-(2, 1, 100, 100, '[{\"QId\":17,\"levelId\":1,\"type\":\"multiChoice\",\"question\":\"east african countries\",\"answer\":\"[\'Rwanda\',\'Kenya\']\",\"response\":\"[\'Rwanda\',\'Kenya\']\",\"marks\":10,\"status\":1,\"dateCreated\":\"2020-09-07T11:40:50.000000Z\",\"dateModified\":\"2020-09-15T20:18:38.000000Z\",\"passed\":true,\"answered\":\"[\'Rwanda\',\'Kenya\']\"},{\"QId\":18,\"levelId\":1,\"type\":\"singleChoice\",\"question\":\"\",\"answer\":\"s\",\"response\":\"s\",\"marks\":90,\"status\":1,\"dateCreated\":\"2020-09-11T00:00:00.000000Z\",\"dateModified\":\"2020-09-15T20:19:29.000000Z\",\"passed\":true,\"answered\":\"s\"}]', 2, '2020-10-14 13:43:29', '2020-10-14 13:43:29');
+(2, 1, 100, 100, '[{\"QId\":17,\"levelId\":1,\"type\":\"multiChoice\",\"question\":\"east african countries\",\"answer\":\"[\'Rwanda\',\'Kenya\']\",\"response\":\"[\'Rwanda\',\'Kenya\']\",\"marks\":10,\"status\":1,\"dateCreated\":\"2020-09-07T11:40:50.000000Z\",\"dateModified\":\"2020-09-15T20:18:38.000000Z\",\"passed\":true,\"answered\":\"[\'Rwanda\',\'Kenya\']\"},{\"QId\":18,\"levelId\":1,\"type\":\"singleChoice\",\"question\":\"\",\"answer\":\"s\",\"response\":\"s\",\"marks\":90,\"status\":1,\"dateCreated\":\"2020-09-11T00:00:00.000000Z\",\"dateModified\":\"2020-09-15T20:19:29.000000Z\",\"passed\":true,\"answered\":\"s\"}]', 2, '2020-10-14 13:43:29', '2020-10-14 13:43:29'),
+(3, 1, 50, 50, '[{\"QId\":17,\"levelId\":1,\"type\":\"multiChoice\",\"question\":\"east african countries\",\"answer\":\"[\'Rwanda\',\'Kenya\']\",\"response\":\"[\'Rwanda\',\'Kenya\']\",\"marks\":50,\"status\":1,\"dateCreated\":\"2020-09-07T11:40:50.000000Z\",\"dateModified\":\"2020-10-14T14:13:23.000000Z\",\"passed\":true,\"answered\":\"[\'Rwanda\',\'Kenya\']\"},{\"QId\":18,\"levelId\":1,\"type\":\"singleChoice\",\"question\":\"\",\"answer\":\"s\",\"response\":\"s\",\"marks\":50,\"status\":1,\"dateCreated\":\"2020-09-11T00:00:00.000000Z\",\"dateModified\":\"2020-10-14T14:13:17.000000Z\",\"passed\":false,\"answered\":\"t\"}]', 2, '2020-10-14 14:13:26', '2020-10-14 14:13:26'),
+(4, 1, 54.545454545455, 60, '[{\"QId\":17,\"levelId\":1,\"type\":\"multiChoice\",\"question\":\"east african countries\",\"answer\":\"[\'Rwanda\',\'Kenya\']\",\"response\":\"[\'Rwanda\',\'Kenya\']\",\"marks\":50,\"status\":1,\"dateCreated\":\"2020-09-07T11:40:50.000000Z\",\"dateModified\":\"2020-10-14T14:13:23.000000Z\",\"passed\":true,\"answered\":\"[\'Rwanda\',\'Kenya\']\"},{\"QId\":18,\"levelId\":1,\"type\":\"singleChoice\",\"question\":\"\",\"answer\":\"s\",\"response\":\"s\",\"marks\":50,\"status\":1,\"dateCreated\":\"2020-09-11T00:00:00.000000Z\",\"dateModified\":\"2020-10-14T14:13:17.000000Z\",\"passed\":false,\"answered\":\"t\"},{\"QId\":19,\"levelId\":1,\"type\":\"multiChoice\",\"question\":\"east african countries\",\"answer\":\"[\'Rwanda\',\'Kenya\']\",\"response\":\"Rwanda\",\"marks\":10,\"status\":1,\"dateCreated\":\"2020-10-14T12:48:27.000000Z\",\"dateModified\":\"2020-10-14T12:48:27.000000Z\",\"passed\":true,\"answered\":\"Rwanda\"}]', 2, '2020-10-14 14:14:57', '2020-10-14 14:14:57');
 
 -- --------------------------------------------------------
 
@@ -124,8 +126,8 @@ CREATE TABLE `quizes` (
 --
 
 INSERT INTO `quizes` (`QId`, `levelId`, `type`, `question`, `answer`, `response`, `marks`, `status`, `dateCreated`, `dateModified`) VALUES
-(17, 1, 'multiChoice', 'east african countries', '[\'Rwanda\',\'Kenya\']', '[\'Rwanda\',\'Kenya\']', 10, 1, '2020-09-07 11:40:50', '2020-09-15 20:18:38'),
-(18, 1, 'singleChoice', '', 's', 's', 90, 1, '2020-09-11 00:00:00', '2020-09-15 20:19:29'),
+(17, 1, 'multiChoice', 'east african countries', '[\'Rwanda\',\'Kenya\']', '[\'Rwanda\',\'Kenya\']', 50, 1, '2020-09-07 11:40:50', '2020-10-14 14:13:23'),
+(18, 1, 'singleChoice', '', 's', 's', 50, 1, '2020-09-11 00:00:00', '2020-10-14 14:13:17'),
 (19, 1, 'multiChoice', 'east african countries', '[\'Rwanda\',\'Kenya\']', 'Rwanda', 10, 1, '2020-10-14 12:48:27', '2020-10-14 12:48:27');
 
 -- --------------------------------------------------------
@@ -153,7 +155,7 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`stdId`, `stdFname`, `stdLname`, `age`, `MSISDN`, `levelId`, `passwordHash`, `type`, `status`, `dateCreated`, `dateModified`) VALUES
-(1, 'Stacy', 'Kayihura', 23, '+250788594828', 2, '$argon2i$v=19$m=65536,t=4,p=1$OD1GMhL8RyFr56XLWPBBqw$D7dwpl+Dp7phElWcmfWNms8rA0S5unca4TqOOk+6R58', 'students', 1, '2020-09-05 15:23:00', '2020-10-14 13:43:29'),
+(1, 'Stacy', 'Kayihura', 23, '+250788594828', 2, '$argon2i$v=19$m=65536,t=4,p=1$OD1GMhL8RyFr56XLWPBBqw$D7dwpl+Dp7phElWcmfWNms8rA0S5unca4TqOOk+6R58', 'students', 1, '2020-09-05 15:23:00', '2020-10-14 14:14:57'),
 (3, 'System', 'Admin', 50, '+250788594000', 1, '$argon2i$v=19$m=65536,t=4,p=1$jA57rRKEY2KOUhqCD4VwxQ$k7J/6IFXhoy8bvVFh66i8JdvZlbGsQAv7aizlmWv68E', 'admin', 1, '2020-09-06 04:14:32', '2020-09-06 04:14:32'),
 (4, 'Harerimana', 'Jean', 30, '+250788594001', 1, '$argon2i$v=19$m=65536,t=4,p=1$tfCsWRZfXtRGrOdwQ6LxWg$UDy2CLFjlfjkIsGzqqbKPCDVr1u9u7GH6OnjSewl1C8', 'admin', 1, '2020-09-06 04:34:55', '2020-09-06 04:34:55'),
 (5, 'Abayo', 'Jean Claude', 30, '+250788594002', 1, '$argon2i$v=19$m=65536,t=4,p=1$Y6SkV2wZX4QCZLsAx+bsNw$k1hOHUNR3uDVv0Wigm/RWGpYWe9urWK4w1qKW603nj0', 'admin', 1, '2020-09-06 05:07:40', '2020-09-06 05:07:40'),
@@ -208,7 +210,7 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `history`
 --
 ALTER TABLE `history`
-  MODIFY `historyId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `historyId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `levels`
 --

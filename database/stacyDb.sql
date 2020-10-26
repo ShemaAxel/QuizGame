@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 07, 2020 at 06:27 AM
+-- Generation Time: Oct 14, 2020 at 09:53 AM
 -- Server version: 5.7.31-0ubuntu0.18.04.1
 -- PHP Version: 7.2.24-0ubuntu0.18.04.6
 
@@ -19,6 +19,31 @@ SET time_zone = "+00:00";
 --
 -- Database: `stacyDb`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `history`
+--
+
+CREATE TABLE `history` (
+  `historyId` int(11) NOT NULL,
+  `studentId` int(11) NOT NULL,
+  `average` double NOT NULL,
+  `points` double NOT NULL,
+  `data` text NOT NULL,
+  `level` int(11) NOT NULL,
+  `dateCreated` datetime NOT NULL,
+  `dateModified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `history`
+--
+
+INSERT INTO `history` (`historyId`, `studentId`, `average`, `points`, `data`, `level`, `dateCreated`, `dateModified`) VALUES
+(1, 1, 100, 100, 'Ok', 2, '2020-10-14 13:37:09', '2020-10-14 13:37:09'),
+(2, 1, 100, 100, '[{\"QId\":17,\"levelId\":1,\"type\":\"multiChoice\",\"question\":\"east african countries\",\"answer\":\"[\'Rwanda\',\'Kenya\']\",\"response\":\"[\'Rwanda\',\'Kenya\']\",\"marks\":10,\"status\":1,\"dateCreated\":\"2020-09-07T11:40:50.000000Z\",\"dateModified\":\"2020-09-15T20:18:38.000000Z\",\"passed\":true,\"answered\":\"[\'Rwanda\',\'Kenya\']\"},{\"QId\":18,\"levelId\":1,\"type\":\"singleChoice\",\"question\":\"\",\"answer\":\"s\",\"response\":\"s\",\"marks\":90,\"status\":1,\"dateCreated\":\"2020-09-11T00:00:00.000000Z\",\"dateModified\":\"2020-09-15T20:19:29.000000Z\",\"passed\":true,\"answered\":\"s\"}]', 2, '2020-10-14 13:43:29', '2020-10-14 13:43:29');
 
 -- --------------------------------------------------------
 
@@ -43,10 +68,7 @@ CREATE TABLE `levels` (
 
 INSERT INTO `levels` (`levelId`, `level`, `levelDescription`, `levelName`, `passingRate`, `status`, `dateCreated`, `dateModified`) VALUES
 (4, 1, 'This level is for P1 students. Includes (Geography,Math etc)', 'Newbies', 40, 1, '2020-09-05 00:00:00', '2020-09-07 09:29:27'),
-(5, 2, 'This level is for P2 students. Includes (Geography,Math etc)', 'Beginner', 50, 1, '2020-09-05 15:27:49', '2020-09-07 09:29:34'),
-(8, 3, 'This level is for P3 students. Includes (Geography,Math etc)', '1st', 50, 1, '2020-09-06 08:01:29', '2020-09-07 09:28:12'),
-(12, 4, 'This level is for P4 students. Includes (Geography,Math etc)', 'Sixth Level', 100, 1, '2020-09-06 08:27:48', '2020-09-07 09:28:23'),
-(15, 5, 'This level is for P5 students. Includes (Geography,Math etc)', 'Sixth Level', 50, 1, '2020-09-06 08:30:47', '2020-09-07 09:28:30');
+(5, 2, 'Test', 'test', 10, 1, '2020-10-14 00:00:00', '2020-10-14 11:26:01');
 
 -- --------------------------------------------------------
 
@@ -97,6 +119,15 @@ CREATE TABLE `quizes` (
   `dateModified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `quizes`
+--
+
+INSERT INTO `quizes` (`QId`, `levelId`, `type`, `question`, `answer`, `response`, `marks`, `status`, `dateCreated`, `dateModified`) VALUES
+(17, 1, 'multiChoice', 'east african countries', '[\'Rwanda\',\'Kenya\']', '[\'Rwanda\',\'Kenya\']', 10, 1, '2020-09-07 11:40:50', '2020-09-15 20:18:38'),
+(18, 1, 'singleChoice', '', 's', 's', 90, 1, '2020-09-11 00:00:00', '2020-09-15 20:19:29'),
+(19, 1, 'multiChoice', 'east african countries', '[\'Rwanda\',\'Kenya\']', 'Rwanda', 10, 1, '2020-10-14 12:48:27', '2020-10-14 12:48:27');
+
 -- --------------------------------------------------------
 
 --
@@ -122,7 +153,7 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`stdId`, `stdFname`, `stdLname`, `age`, `MSISDN`, `levelId`, `passwordHash`, `type`, `status`, `dateCreated`, `dateModified`) VALUES
-(1, 'Stacy', 'Kayihura', 23, '+250788594828', 1, '$argon2i$v=19$m=65536,t=4,p=1$OD1GMhL8RyFr56XLWPBBqw$D7dwpl+Dp7phElWcmfWNms8rA0S5unca4TqOOk+6R58', 'students', 1, '2020-09-05 15:23:00', '2020-09-05 15:23:00'),
+(1, 'Stacy', 'Kayihura', 23, '+250788594828', 2, '$argon2i$v=19$m=65536,t=4,p=1$OD1GMhL8RyFr56XLWPBBqw$D7dwpl+Dp7phElWcmfWNms8rA0S5unca4TqOOk+6R58', 'students', 1, '2020-09-05 15:23:00', '2020-10-14 13:43:29'),
 (3, 'System', 'Admin', 50, '+250788594000', 1, '$argon2i$v=19$m=65536,t=4,p=1$jA57rRKEY2KOUhqCD4VwxQ$k7J/6IFXhoy8bvVFh66i8JdvZlbGsQAv7aizlmWv68E', 'admin', 1, '2020-09-06 04:14:32', '2020-09-06 04:14:32'),
 (4, 'Harerimana', 'Jean', 30, '+250788594001', 1, '$argon2i$v=19$m=65536,t=4,p=1$tfCsWRZfXtRGrOdwQ6LxWg$UDy2CLFjlfjkIsGzqqbKPCDVr1u9u7GH6OnjSewl1C8', 'admin', 1, '2020-09-06 04:34:55', '2020-09-06 04:34:55'),
 (5, 'Abayo', 'Jean Claude', 30, '+250788594002', 1, '$argon2i$v=19$m=65536,t=4,p=1$Y6SkV2wZX4QCZLsAx+bsNw$k1hOHUNR3uDVv0Wigm/RWGpYWe9urWK4w1qKW603nj0', 'admin', 1, '2020-09-06 05:07:40', '2020-09-06 05:07:40'),
@@ -135,6 +166,12 @@ INSERT INTO `students` (`stdId`, `stdFname`, `stdLname`, `age`, `MSISDN`, `level
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `history`
+--
+ALTER TABLE `history`
+  ADD PRIMARY KEY (`historyId`);
 
 --
 -- Indexes for table `levels`
@@ -168,10 +205,15 @@ ALTER TABLE `students`
 --
 
 --
+-- AUTO_INCREMENT for table `history`
+--
+ALTER TABLE `history`
+  MODIFY `historyId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT for table `levels`
 --
 ALTER TABLE `levels`
-  MODIFY `levelId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `levelId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `outboundsms`
 --
@@ -181,7 +223,7 @@ ALTER TABLE `outboundsms`
 -- AUTO_INCREMENT for table `quizes`
 --
 ALTER TABLE `quizes`
-  MODIFY `QId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `QId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT for table `students`
 --

@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 use App\Students;
 use App\Quizes;
 use App\Levels;
+use App\History;
+
 
 use App\Http\Resources\Helper;
 use Illuminate\Http\Request;
@@ -134,6 +136,7 @@ class QuizesController extends Controller
 
             $studentPoint=0;
             $quizPoints=0;
+            $answers =[];
 
             //search student and level
             $student =  Students::where([
@@ -169,6 +172,7 @@ class QuizesController extends Controller
             }
 
             //looping throug answers
+            $row=0;
             foreach($request->answers as $answer){
 
 
@@ -181,10 +185,24 @@ class QuizesController extends Controller
 
                 //check answers
 
-                if($quiz->answer == $answer["answer"] ){
+                if($quiz->response == $answer["answer"] ){
                     $studentPoint=$studentPoint+$quiz->marks;
-                }
-            }
+
+                    $quiz->passed = true;
+                    $quiz->answered = $answer["answer"];
+
+                    $answers[$row]=$quiz;
+
+                }else{
+
+                    $quiz->passed = false;
+                    $quiz->answered = $answer["answer"];
+
+                    $answers[$row]=$quiz;
+                }//if
+            
+            $row++;
+            }//for
 
             // calculating the %, stdPoints * 100/ quizPoints
 
@@ -207,21 +225,64 @@ class QuizesController extends Controller
             }else{
 
                 // graduate student
+
+                $level = Levels::where([
+                    ["status", "=", "1"],
+                    ["level", "=", $student->levelId+1],
+                ])->first();
+
+                if(!$level){
+                    return response()->json([
+                        "responseDescription" => "Upper level doesnt exist.",
+                        "responseCode" => "101",
+                        "responseMessage" => "Level doesnt exist: ".($student->levelId+1),
+                        "meta" => [
+                            "content" => "",
+                        ],
+                    ], 200);
+                }
+
+
                 $student->levelId = $student->levelId+1;
                 $student->save(); 
 
-                return response()->json([
-                    "responseDescription" => "Quiz Results",
-                    "responseMessage" => "The student passed.",
-                    "responseCode" => "100",
-	 	    "passed" => true,
-                    "meta" => [
-                        "Quiz Total Points" => $quizPoints,
-                        "Student Points" => $studentPoint,
-                        "Average" => $percentage,
-                        "New Level"=> $student->levelId,
-                    ],
-                ], 200);
+
+
+                //log to history
+                $history = new History;
+                $history->studentId=$request->stdId;
+                $history->average=$percentage;
+                $history->points=$studentPoint;
+                $history->data= json_encode($answers);
+                $history->level=$student->levelId;
+
+                $history->dateCreated = $history->dateModified = date("Y-m-d H:i:s");
+                
+                if($history->save()){
+
+                    return response()->json([
+                        "responseDescription" => "Quiz Results",
+                        "responseMessage" => "The student passed.",
+                        "responseCode" => "100",
+                        "passed" => true,
+                                "meta" => [
+                                    "Quiz Total Points" => $quizPoints,
+                                    "Student Points" => $studentPoint,
+                                    "Average" => $percentage,
+                                    "New Level"=> $student->levelId,
+                                    "Answers" => $answers,
+                                ],
+                            ], 200);
+                }else{
+
+                    return response()->json([
+                        "responseDescription" => "Failed",
+                        "responseMessage" => "Failed",
+                        "responseCode" => "101",
+                        "passed" => true,
+                                "meta" => null
+                            ], 200);
+                }
             }
 
 

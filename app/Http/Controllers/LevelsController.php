@@ -119,15 +119,36 @@ class LevelsController extends Controller
     {
         try{
 
-            $level = Levels::with('quizes')
-            ->where([["levelId", "=", $id]])->get();
+            // $levels = Levels::with('quizes')
+            // ->where([["levelId", "=", $id]])->get();
+
+            $level = Levels::where([["level", "=", $id]])->first();
+
+            if(!$level){
+                Log::error("An error occured");
+                return response()->json([
+                    "responseDescription" => "Level doesnt exist.",
+                    "responseCode" => "101",
+                    "responseMessage" => "Level doesnt exist.",
+                    "meta" => [
+                        "content" => null,
+                    ],
+                ], 200);
+            }
+
+
+            $quizez = Quizes::where([
+                ["status", "=", "1"],
+                ["levelId", "=", $level->level],
+            ])->get();
 
             return response()->json([
                 "responseDescription" => "Level details",
                 "responseCode" => "",
                 "responseMessage" => "",
                 "meta" => [
-                    "content" => $level,
+                    "level" => $level,
+                    "quizzes" => $quizez,
                 ],
             ], 200);
             

@@ -8,15 +8,15 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
 
-class Levels extends Model 
+class History extends Model 
 {
 
     /* The table associated with the model.
     *
     * @var string
     */
-   protected $table = 'levels';
-   protected $primaryKey = "levelId";
+   protected $table = 'history';
+   protected $primaryKey = "historyId";
    const CREATED_AT = 'dateCreated';
    const UPDATED_AT = 'dateModified';
 
@@ -26,10 +26,7 @@ class Levels extends Model
      * @var array
      */
     protected $fillable = [
-        'levelId', 'levelDescription', 'levelName', 'status','level'
+        'studentId', 'average', 'points', 'data','level'
     ];
 
-    public function quizes() {
-        return $this->hasMany('App\Quizes','levelId')->where('status','1');
-    }
 }

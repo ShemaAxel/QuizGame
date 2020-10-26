@@ -26,7 +26,7 @@ class Quizes extends Model
      * @var array
      */
     protected $fillable = [
-        'QId', 'levelId', 'type', 'question', 'answer', 'response', 'marks', 'status'
+        'QId', 'levelId','levelId', 'type', 'question', 'answer', 'response', 'marks', 'status','passed', 'answered',''
     ];
 
 }

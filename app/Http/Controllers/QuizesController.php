@@ -219,7 +219,8 @@ class QuizesController extends Controller
                     "meta" => [
                         "Quiz Total Points" => $quizPoints,
                         "Student Points" => $studentPoint,
-                        "Average" => $percentage
+                        "Average" => $percentage,
+                        "Answers" => $answers,
                     ],
                 ], 200);
             }else{

@@ -56,6 +56,51 @@ class QuizesController extends Controller
             return response()->json($ex->getMessage(), 500);
         }
     }
+
+    public function deleteQuiz($id){
+
+        try{
+
+        
+            $quiz = Quizes::where([
+                ["QId", "=", $id],
+            ])->first();
+
+            if($quiz){
+                $quiz->status=0;
+                $quiz->save();
+
+            
+                return response()->json([
+                    "responseDescription" => "Quiz deactivated.",
+                    "responseCode" => "100",
+                    "responseMessage" => "",
+                    "meta" => [
+                        "content" => $quiz,
+                    ],
+                ], 200);
+            }else{
+                return response()->json([
+                    "responseDescription" => "Quiz dont exit.",
+                    "responseCode" => "103",
+                    "responseMessage" => "",
+                    "meta" => [
+                        "content" => null,
+                    ],
+                ], 200);
+            }
+
+
+        } catch (Exception $ex) {
+
+            Log::error("Application . Exception : " . $ex->getMessage());
+            return response()->json($ex->getMessage(), 500);
+        }
+
+    }
+
+
+
      /**
      * Create  
      *

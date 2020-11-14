@@ -230,4 +230,82 @@ class StudentsController extends Controller
             return response()->json($ex->getMessage(), 500);
         }
     }
+
+    public function deactivate($id){
+
+        try{
+            
+            $student = Students::where([
+                ["stdId", "=", $id]
+            ])->first();
+
+            if($student){
+                $student->status =0;
+                $student->save();
+
+                return response()->json([
+                    "responseDescription" => "User Deactive.",
+                    "responseCode" => "100",
+                    "responseMessage" => "",
+                    "meta" => [
+                        "content" => $student,
+                    ],
+                ], 200);
+            }else{
+                return response()->json([
+                    "responseDescription" => "User dont exit.",
+                    "responseCode" => "103",
+                    "responseMessage" => "",
+                    "meta" => [
+                        "content" => null,
+                    ],
+                ], 200);
+            }
+
+        } catch (Exception $ex) {
+
+            Log::error("Application . Exception : " . $ex->getMessage());
+            return response()->json($ex->getMessage(), 500);
+        }
+
+    }
+
+    public function activate($id){
+
+        try{
+            
+            $student = Students::where([
+                ["stdId", "=", $id]
+            ])->first();
+
+            if($student){
+                $student->status =1;
+                $student->save();
+
+                return response()->json([
+                    "responseDescription" => "User Deactive.",
+                    "responseCode" => "100",
+                    "responseMessage" => "",
+                    "meta" => [
+                        "content" => $student,
+                    ],
+                ], 200);
+            }else{
+                return response()->json([
+                    "responseDescription" => "User dont exit.",
+                    "responseCode" => "103",
+                    "responseMessage" => "",
+                    "meta" => [
+                        "content" => null,
+                    ],
+                ], 200);
+            }
+
+        } catch (Exception $ex) {
+
+            Log::error("Application . Exception : " . $ex->getMessage());
+            return response()->json($ex->getMessage(), 500);
+        }
+
+    }
 }

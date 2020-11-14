@@ -20,6 +20,8 @@ $router->group(["prefix" => "api",'middleware' => 'auth'], function () use ($rou
     $router->get('/students/all', ['uses' => 'StudentsController@all']);
     $router->post('/students/create', ['uses' => 'StudentsController@create']);
     $router->post('/students/login', ['uses' => 'StudentsController@login']);
+    $router->get('/students/deactivate/{id}', ['uses' => 'StudentsController@deactivate']);
+    $router->get('/students/activate/{id}', ['uses' => 'StudentsController@activate']);
 
 });
 
@@ -28,6 +30,7 @@ $router->group(["prefix" => "api",'middleware' => 'auth'], function () use ($rou
     $router->get('/quizes/all', ['uses' => 'QuizesController@all']);
     $router->post('/quizes/create', ['uses' => 'QuizesController@create']);
     $router->post('/quiz/answers', ['uses' => 'QuizesController@correction']);
+    $router->get('/quiz/deactivate/{id}', ['uses' => 'QuizesController@deleteQuiz']);
 });
 
 //a group of all level endpoints

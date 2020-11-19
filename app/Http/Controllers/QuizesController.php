@@ -254,13 +254,24 @@ class QuizesController extends Controller
             $percentage = ($studentPoint * 100) / $quizPoints;
 
 
+            //log to history
+            $history = new History;
+            $history->studentId=$request->stdId;
+            $history->average=$percentage;
+            $history->points=$studentPoint;
+            $history->data= implode($answers);
+            $history->level=$student->levelId;
+
+            $history->dateCreated = $history->dateModified = date("Y-m-d H:i:s");
+            $history->save();
+
             if($level->passingRate > $percentage ){
 
                 return response()->json([
                     "responseDescription" => "Quiz Results",
                     "responseMessage" => "The student did not pass.",
                     "responseCode" => "101",
-		    "passed" => false,
+		            "passed" => false,
                     "meta" => [
                         "Quiz Total Points" => $quizPoints,
                         "Student Points" => $studentPoint,
@@ -292,20 +303,6 @@ class QuizesController extends Controller
                 $student->levelId = $student->levelId+1;
                 $student->save(); 
 
-
-
-                //log to history
-                $history = new History;
-                $history->studentId=$request->stdId;
-                $history->average=$percentage;
-                $history->points=$studentPoint;
-                $history->data= json_encode($answers);
-                $history->level=$student->levelId;
-
-                $history->dateCreated = $history->dateModified = date("Y-m-d H:i:s");
-                
-                if($history->save()){
-
                     return response()->json([
                         "responseDescription" => "Quiz Results",
                         "responseMessage" => "The student passed.",
@@ -319,16 +316,7 @@ class QuizesController extends Controller
                                     "Answers" => $answers,
                                 ],
                             ], 200);
-                }else{
 
-                    return response()->json([
-                        "responseDescription" => "Failed",
-                        "responseMessage" => "Failed",
-                        "responseCode" => "101",
-                        "passed" => true,
-                                "meta" => null
-                            ], 200);
-                }
             }
 
 

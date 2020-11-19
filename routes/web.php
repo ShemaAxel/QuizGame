@@ -43,4 +43,6 @@ $router->group(["prefix" => "api",'middleware' => 'auth'], function () use ($rou
 //a group of all level endpoints
 $router->group(["prefix" => "api"], function () use ($router) {
     $router->get('/history/{id}', ['uses' => 'HistoryController@findById']);
+    $router->get('/history/data/{id}', ['uses' => 'HistoryController@findDataById']);
+
 });

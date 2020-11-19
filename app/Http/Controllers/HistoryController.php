@@ -57,4 +57,48 @@ class HistoryController extends Controller
         }
 
     }
+
+     /**
+     * findById  
+     *
+     * @return Json
+     */
+    public function findDataById($id)
+    {
+        try{
+
+            // $levels = Levels::with('quizes')
+            // ->where([["levelId", "=", $id]])->get();
+
+            $history = History::where([["historyId", "=", $id]])->first();
+
+            if(!$history){
+                Log::error("An error occured");
+                return response()->json([
+                    "responseDescription" => "Level doesnt exist.",
+                    "responseCode" => "101",
+                    "responseMessage" => "Level doesnt exist.",
+                    "meta" => [
+                        "content" => null,
+                    ],
+                ], 200);
+            }
+
+            return response()->json([
+                "responseDescription" => "Student history",
+                "responseCode" => "100",
+                "responseMessage" => "Student performance history",
+                "meta" => [
+                    "details" => json_decode($history->data),
+                ],
+            ], 200);
+            
+
+        }catch(Exception $ex){
+            Log::error("Application . Exception : " . $ex->getMessage());
+
+            return response()->json($ex->getMessage(), 500);
+        }
+
+    }
 }

@@ -7,6 +7,7 @@ use App\Students;
 use App\Quizes;
 use App\Levels;
 use App\OutboundSMS;
+use App\Course;
 
 
 use Illuminate\Support\Facades\Log;
@@ -40,6 +41,26 @@ class Helper
                 "levelId"=>"required",
                 "MSISDN"=>"required",
                 "type"=>"required",
+            ])->validate();
+
+            return null;
+        } catch (ValidationException $e) {
+            $arr = [];
+            foreach ($e->errors() as $key => $value) {
+                $arr[$key] = $value[0];
+            }
+
+            return $arr;
+        }
+    }
+
+    public function validateCourseRequest($request){
+
+        try {
+
+            $validator = \Validator::make($request->all(), [
+                "courseName"=>"required",
+                "courseDescription"=>"required",
             ])->validate();
 
             return null;
@@ -162,6 +183,19 @@ class Helper
     {
         $this->PIN = mt_rand(1000, 9999);
         return $this->PIN;
+    }
+
+    public function createCourse($request){
+
+        $course = new Course;
+        $course->courseName = $request->courseName;
+        $course->courseDescription = $request->courseDescription;
+        $course->status = 1;
+
+        $course->dateCreated = $course->dateModified = date("Y-m-d H:i:s");
+        $course->save();
+
+        return $course;
     }
 
     public function createQuize($request){

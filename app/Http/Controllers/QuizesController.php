@@ -283,25 +283,25 @@ class QuizesController extends Controller
 
                 // graduate student
 
-                $level = Levels::where([
-                    ["status", "=", "1"],
-                    ["level", "=", $student->levelId+1],
-                ])->first();
+                // $level = Levels::where([
+                //     ["status", "=", "1"],
+                //     ["level", "=", $student->levelId+1],
+                // ])->first();
 
-                if(!$level){
-                    return response()->json([
-                        "responseDescription" => "Upper level doesnt exist.",
-                        "responseCode" => "101",
-                        "responseMessage" => "Level doesnt exist: ".($student->levelId+1),
-                        "meta" => [
-                            "content" => "",
-                        ],
-                    ], 200);
-                }
+                // if(!$level){
+                //     return response()->json([
+                //         "responseDescription" => "Upper level doesnt exist.",
+                //         "responseCode" => "101",
+                //         "responseMessage" => "Level doesnt exist: ".($student->levelId+1),
+                //         "meta" => [
+                //             "content" => "",
+                //         ],
+                //     ], 200);
+                // }
 
 
-                $student->levelId = $student->levelId+1;
-                $student->save(); 
+                // $student->levelId = $student->levelId+1;
+                // $student->save(); 
 
                     return response()->json([
                         "responseDescription" => "Quiz Results",
@@ -312,7 +312,7 @@ class QuizesController extends Controller
                                     "Quiz Total Points" => $quizPoints,
                                     "Student Points" => $studentPoint,
                                     "Average" => $percentage,
-                                    "New Level"=> $student->levelId,
+                                    // "New Level"=> $student->levelId,
                                     "Answers" => $answers,
                                 ],
                             ], 200);

@@ -22,7 +22,7 @@ $router->group(["prefix" => "api",'middleware' => 'auth'], function () use ($rou
     $router->post('/students/login', ['uses' => 'StudentsController@login']);
     $router->get('/students/deactivate/{id}', ['uses' => 'StudentsController@deactivate']);
     $router->get('/students/activate/{id}', ['uses' => 'StudentsController@activate']);
-
+    $router->post('/students/update', ['uses' => 'StudentsController@updateStudent']);
 });
 
 //a group of all quizes endpoints
@@ -38,11 +38,18 @@ $router->group(["prefix" => "api",'middleware' => 'auth'], function () use ($rou
     $router->get('/levels/all', ['uses' => 'LevelsController@all']);
     $router->post('/level/create', ['uses' => 'LevelsController@create']);
     $router->get('/level/{id}', ['uses' => 'LevelsController@findById']);
+    $router->get('/level/course/{id}', ['uses' => 'LevelsController@findByCourseId']);
 
 });
+
 //a group of all level endpoints
 $router->group(["prefix" => "api"], function () use ($router) {
     $router->get('/history/{id}', ['uses' => 'HistoryController@findById']);
     $router->get('/history/data/{id}', ['uses' => 'HistoryController@findDataById']);
+});
 
+//a group of all level endpoints
+$router->group(["prefix" => "api"], function () use ($router) {
+    $router->get('/course/all', ['uses' => 'CourseController@all']);
+    $router->post('/course/create', ['uses' => 'CourseController@create']);
 });

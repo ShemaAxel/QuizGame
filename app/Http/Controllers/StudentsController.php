@@ -308,4 +308,55 @@ class StudentsController extends Controller
         }
 
     }
+
+
+    public function updateStudent(Request $request){
+
+        try{
+            
+            $notValid = $this->helpers->validateStudentRequest($request);
+
+            if ($notValid) {
+                Log::error("Validation Error.");
+                return response()->json([
+                    "responseDescription" => "Invalid Request.",
+                    "responseCode" => "",
+                    "responseMessage" => "",
+                    "meta" => [
+                        "content" => $notValid,
+                    ],
+                ], 200);
+            }
+
+            $student = Students::where([
+                ["MSISDN", "=", $request->MSISDN]
+            ])->first();
+
+            if (!$student) {
+                Log::error("Validation Error.");
+                return response()->json([
+                    "responseDescription" => "Student dont exist.",
+                    "responseCode" => "",
+                    "responseMessage" => "",
+                    "meta" => [
+                        "MSISDN" => $request->MSISDN,
+                    ],
+                ], 200);
+            }
+
+            $student->stdFname = $request->stdFname;
+            $student->stdLname = $request->stdLname;
+            $student->age = $request->age;
+            $student->MSISDN = $request->MSISDN;
+            $student->levelId = $request->levelId;
+            $student->type = $request->type;
+            $student->save();
+
+        } catch (Exception $ex) {
+
+            Log::error("Application . Exception : " . $ex->getMessage());
+            return response()->json($ex->getMessage(), 500);
+        }
+
+    }
 }

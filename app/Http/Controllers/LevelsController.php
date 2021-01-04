@@ -204,4 +204,50 @@ class LevelsController extends Controller
         }
 
     }
+
+
+      /**
+     * findById  
+     *
+     * @return Json
+     */
+    public function findBygradeId($id)
+    {
+        try{
+
+
+            // $levels = Levels::with('quizes')
+            // ->where([["levelId", "=", $id]])->get();
+
+            $levels = Levels::where([["level", "=", $id]])->get();
+
+            if(!$levels){
+                Log::error("An error occured");
+                return response()->json([
+                    "responseDescription" => "Level doesnt exist.",
+                    "responseCode" => "101",
+                    "responseMessage" => "Level doesnt exist.",
+                    "meta" => [
+                        "content" => null,
+                    ],
+                ], 200);
+            }
+
+            return response()->json([
+                "responseDescription" => "All the courses",
+                "responseCode" => "100",
+                "responseMessage" => "Courses in a specific grade.",
+                "meta" => [
+                    "level" => $levels,
+                ],
+            ], 200);
+            
+
+        }catch(Exception $ex){
+            Log::error("Application . Exception : " . $ex->getMessage());
+
+            return response()->json($ex->getMessage(), 500);
+        }
+
+    }
 }

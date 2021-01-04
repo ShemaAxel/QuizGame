@@ -39,6 +39,8 @@ $router->group(["prefix" => "api",'middleware' => 'auth'], function () use ($rou
     $router->post('/level/create', ['uses' => 'LevelsController@create']);
     $router->get('/level/{id}', ['uses' => 'LevelsController@findById']);
     $router->get('/level/course/{id}', ['uses' => 'LevelsController@findByCourseId']);
+    $router->get('/levels/grade/{id}', ['uses' => 'LevelsController@findBygradeId']);
+
 
 });
 

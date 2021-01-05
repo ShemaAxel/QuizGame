@@ -328,9 +328,11 @@ class StudentsController extends Controller
                 ], 200);
             }
 
-            $student = Students::where([
-                ["MSISDN", "=", $request->MSISDN]
-            ])->first();
+            $student = Students::find($request->stdId);
+            
+            // where([
+            //     ["MSISDN", "=", $request->MSISDN]
+            // ])->first();
 
             if (!$student) {
                 Log::error("Validation Error.");
@@ -339,7 +341,7 @@ class StudentsController extends Controller
                     "responseCode" => "",
                     "responseMessage" => "",
                     "meta" => [
-                        "MSISDN" => $request->MSISDN,
+                        "studentID" => $request->stdId,
                     ],
                 ], 200);
             }
@@ -350,7 +352,18 @@ class StudentsController extends Controller
             $student->MSISDN = $request->MSISDN;
             $student->levelId = $request->levelId;
             $student->type = $request->type;
-            $student->save();
+            
+            if($student->save()){
+                Log::error("Validation Error.");
+                return response()->json([
+                    "responseDescription" => "Student updated successfully.",
+                    "responseCode" => "",
+                    "responseMessage" => "",
+                    "meta" => [
+                        "details" => $student,
+                    ],
+                ], 200);
+            }
 
         } catch (Exception $ex) {
 

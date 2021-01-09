@@ -216,6 +216,27 @@ class QuizesController extends Controller
                 ], 200);
             }
 
+
+            //=======================
+            $levell = Levels::where([
+                ["status", "=", "1"],
+                ["levelId", "=", $request->levelId],
+            ])->first();
+
+            if(!$level){
+                return response()->json([
+                    "responseDescription" => "Invalid courseID.",
+                    "responseCode" => "101",
+                    "responseMessage" => "Unkown course.",
+                    "meta" => [
+                        "content" => $request->levelId,
+                    ],
+                ], 200);
+            }
+
+            //======================
+
+
             //looping throug answers
             $row=0;
             foreach($request->answers as $answer){
@@ -261,6 +282,8 @@ class QuizesController extends Controller
             $history->points=$studentPoint;
             $history->data= implode($answers);
             $history->level=$student->levelId;
+            $history->courseName=$levell->levelName;
+            
 
             $history->dateCreated = $history->dateModified = date("Y-m-d H:i:s");
             $history->save();

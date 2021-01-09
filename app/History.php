@@ -26,7 +26,7 @@ class History extends Model
      * @var array
      */
     protected $fillable = [
-        'studentId', 'average', 'points', 'data','level'
+        'studentId', 'average', 'points', 'data','level','courseName'
     ];
 
 }

@@ -112,29 +112,38 @@ class HistoryController extends Controller
     {
         try{
 
-            // $levels = Levels::with('quizes')
-            // ->where([["levelId", "=", $id]])->get();
+            $history = History::where([["level", "=", $id]])->get();
 
-            $history = History::where([["historyId", "=", $id]])->first();
 
-            if(!$history){
-                Log::error("An error occured");
-                return response()->json([
-                    "responseDescription" => "History doesnt exist.",
-                    "responseCode" => "101",
-                    "responseMessage" => "History doesnt exist.",
-                    "meta" => [
-                        "content" => null,
-                    ],
-                ], 200);
-            }
+            //looping through all historizzz
+            $row=0;
+            $hitz = [];
+
+
+            foreach($history as $hist){
+
+                $student = Students::where([
+                    ["stdId", "=", $hist->studentId]
+                ])->first();
+
+                $hist->stdFname= $student->stdFname;
+                $hist->stdLname= $student->stdLname;
+
+                $hitz[$row] = $hist;
+            $row++;
+            }//for
+
+
+
+
+
 
             return response()->json([
                 "responseDescription" => "Student history",
                 "responseCode" => "100",
                 "responseMessage" => "Student performance history",
                 "meta" => [
-                    "details" => json_decode($history->data),
+                    "details" => $hitz,
                 ],
             ], 200);
             

@@ -75,9 +75,9 @@ class HistoryController extends Controller
             if(!$history){
                 Log::error("An error occured");
                 return response()->json([
-                    "responseDescription" => "Level doesnt exist.",
+                    "responseDescription" => "History doesnt exist.",
                     "responseCode" => "101",
-                    "responseMessage" => "Level doesnt exist.",
+                    "responseMessage" => "History doesnt exist.",
                     "meta" => [
                         "content" => null,
                     ],

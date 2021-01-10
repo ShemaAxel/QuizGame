@@ -281,13 +281,7 @@ class QuizesController extends Controller
             $history->average=$percentage;
             $history->points=$studentPoint;
             $history->data= json_encode($answers);//implode
-
-     
-            // print_r(json_encode($answers));
-            // die;
-
-
-            $history->level=$student->levelId;
+            $history->level=$request->levelId;//$student->levelId;
             $history->courseName=$levell->levelName;
             
 

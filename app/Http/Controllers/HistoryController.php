@@ -128,6 +128,7 @@ class HistoryController extends Controller
 
                 $hist->stdFname= $student->stdFname;
                 $hist->stdLname= $student->stdLname;
+                $hist->data= json_decode($hist->data);
 
                 $hitz[$row] = $hist;
             $row++;

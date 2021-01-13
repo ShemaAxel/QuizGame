@@ -8,6 +8,8 @@ use App\Quizes;
 use App\Levels;
 use App\OutboundSMS;
 use App\Course;
+use GuzzleHttp\Psr7\Request;
+
 
 
 use Illuminate\Support\Facades\Log;
@@ -158,9 +160,50 @@ class Helper
         $body = "Your PIN is : " . $this->PIN;
         $this->logPasswordSMS($request->MSISDN, $body);
 
+        $this->smsSender(ltrim($request->MSISDN,'+'), $body);
+
 
         return $student;
     }
+
+    //send sms
+    public function smsSender($msisdn,$message){
+
+        $client = new \GuzzleHttp\Client();
+
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>
+        <request type="sendsms">
+        <authentication>
+            <username>rvcp</username>
+            <password>$2y$10$TwvSpBfk8ipsTXQKb3HHpueeZWHh.inSZL7fv7cZoYTzTw569B96S</password>
+            <key>20140812</key>
+        </authentication>
+        <parameters>
+            <dlr>1</dlr>
+            <recipient>'.$msisdn.'</recipient>
+            <sender>QuizApp</sender>
+            <message>'.$message.'</message>
+        </parameters>
+        </request>';
+
+        $uri ='https://sms.mvendgroup.com/api';
+
+        $request = new Request(
+            'POST', 
+            $uri,
+            ['Content-Type' => 'text/xml; charset=UTF8'],
+            $xml
+        );
+        $response = $client->send($request);
+
+        if($response->getStatusCode()==200){
+            return true;
+        }
+        return false;
+    }
+
+
+
 
     // PINSMS
 
